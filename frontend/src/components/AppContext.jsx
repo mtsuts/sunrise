@@ -11,6 +11,7 @@ export const AppProvider = ({ children }) => {
   const [activityInput, setActivityInput] = useState("");
   const [page, setPage] = useState(1);
   const [avatar, setAvatar] = useState("");
+  const [updateActivities, setUpdateActivities] = useState(false)
 
   const login = () => {
     setIsLoggedIn(true);
@@ -40,6 +41,8 @@ export const AppProvider = ({ children }) => {
         setAvatar,
         activities,
         setActivities,
+        updateActivities, 
+        setUpdateActivities
       }}
     >
       {children}

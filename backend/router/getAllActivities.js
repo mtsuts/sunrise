@@ -8,7 +8,7 @@ const supabaseKey = process.env.SUPABASE_KEY
 const supabaseUrl = process.env.SUPABASE_URL
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-router.get('/get-activities-DB', stravaAuth, async (req, res) => {
+router.get('/get-all-activities', stravaAuth, async (req, res) => {
   const accessToken = req.session.accessToken
   const userID = req.session.athleteID
   try {

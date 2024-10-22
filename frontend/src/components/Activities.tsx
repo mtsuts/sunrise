@@ -1,81 +1,84 @@
 import React from "react";
-import { useEffect, useContext } from "react";
-import { GetActivity } from "../api/api";
+import { useEffect, useContext, useState } from "react";
+import { GetAndSaveActivity } from "../api/api";
 import { AppContext } from "./AppContext";
 import { Button, Box, TextField } from "@mui/material";
 import { unixTimestamp } from "../utils/metricsUpdates";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateField } from "@mui/x-date-pickers/DateField";
+import { DatePicker } from "@mui/x-date-pickers";
 import theme from "../utils/themes";
 
 interface ActivitiesProps {
-  children: React.ReactNode;
+  value: String;
 }
 
-export default function Activities({ children }: ActivitiesProps) {
-  const { setActivities, activities } = useContext(AppContext);
-  const after = unixTimestamp("2021-08-09");
-  const before = unixTimestamp("2021-10-11");
-  const activityName = "Oldervik";
+export default function Activities({ value }: ActivitiesProps) {
+  const { updateActivities, setUpdateActivities } = useContext(AppContext);
+  const [dateValue, setDateValue] = useState("");
+  const [prevDate, setPrevDate] = useState("");
+  const [nextDate, setNextDate] = useState("");
+  const [activityName, setActivityName] = useState("");
 
-  if (activities) {
-    console.log(activities);
-  }
-  const activity =
-    activities.filter((d: { name: String }) => d.name === activityName)[0] ||
-    {};
+  const after = unixTimestamp(prevDate || "");
+  const before = unixTimestamp(nextDate || "");
 
   return (
     <>
       <Box sx={{ width: { xs: "100%", sm: "50%" }, marginTop: 4 }}>
-        To get your strava activity which you would like to share as a route,
-        please fill simple form below with activity date and activity name, so
-        we will retrive your activity from Strava
+        Get your desired Strava Activity. Please indicate exact information
+        about activity date and name.
       </Box>
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DemoContainer components={["DateField"]}>
-            <DateField
-              sx={{
-                "& .MuiInputBase-input": {
-                  color: "#ffffff",
-                  "& .MuiInputLabel-root": {
-                    color: "#ffffff", // Label color
-                  },
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "#ffffff", // Border color for the outline
-                  },
-                },
+          <DemoContainer components={["DatePicker"]}>
+            <DatePicker
+              onChange={(event) => {
+                console.log(event);
+                if (event !== null) {
+                  const nextDate = event.add(1, "day");
+                  const prevDate = event.add(-1, "day");
+                  setDateValue(event.format("YYYY-MM-DD"));
+                  setPrevDate(prevDate.format("YYYY-MM-DD"));
+                  setNextDate(nextDate.format("YYYY-MM-DD"));
+                }
               }}
+              sx={{ label: { color: "#ffffff", left: "auto", top: "auto" } }}
               label="Activity Date"
             />
           </DemoContainer>
         </LocalizationProvider>
         <TextField
-          sx={{ color: "White" }}
-          id="filled-basic"
-          label="Activity Name"
-          variant="filled"
-        />
-
-        <Button
-          sx={{ fontSize: 16 }}
-          onClick={() => {
-            GetActivity(before, after).then((data) => {
-              setActivities(data.data);
-              localStorage.setItem("activity", "received");
-            });
+          sx={{
+            color: "White",
+            label: {
+              left: "auto",
+              top: "auto",
+              color: theme.palette.text.primary,
+            },
           }}
-        >
-          Get your activity
-        </Button>
+          onChange={(event) => {
+            setActivityName(event.target.value);
+          }}
+          required={true}
+          id="standard-basic"
+          label="Activity name"
+          variant="standard"
+        />
       </Box>
-      {/* <Box sx={{ border: 1, width: "50%", p: 4, marginTop: 4 }}>
-        {activity?.name}, You needed {activity?.movingTime} to finish this
-        route.
-      </Box> */}
+      <Button
+        variant="contained"
+        sx={{ fontSize: 16, marginTop: 5 }}
+        onClick={() => {
+          GetAndSaveActivity(before, after, activityName).then((data) => {
+            setUpdateActivities(true);
+            localStorage.setItem("activity", "received");
+          });
+        }}
+      >
+        Get activity
+      </Button>
     </>
   );
 }

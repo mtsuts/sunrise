@@ -14,6 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AppContext } from "./AppContext";
+import theme from "../utils/themes";
 
 // const pages = ["Routes", "About us"];
 // const settings = ["Profile", "Dashboard", "Logout"];
@@ -79,7 +80,7 @@ function ResponsiveAppBar() {
                 fontFamily: "monospace",
                 fontWeight: 700,
                 letterSpacing: ".3rem",
-                color: "inherit",
+                color: theme.palette.text.green,
                 textDecoration: "none",
               }}
             >

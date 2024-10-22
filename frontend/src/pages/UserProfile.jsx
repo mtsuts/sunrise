@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useContext } from "react";
 import { AppContext } from "../components/AppContext";
 import { Box, Pagination } from "@mui/material";
-import { GetActivities, GetActivityDB, GetAthlete } from "../api/api";
+import { GetActivities, GetAllActivities, GetAthlete } from "../api/api";
 import { useSearchParams } from "react-router-dom";
 import theme from "../utils/themes";
 import CardsGrid from "../components/CardsGrid";
@@ -21,11 +21,13 @@ export default function UserProfile() {
     page,
     avatar,
     setAvatar,
-    setActivities
+    activities,
+    setActivities,
+    updateActivities,
   } = useContext(AppContext);
   const dataLoaded = useRef(false);
 
-  // load data
+  // load athlete data
   useEffect(() => {
     if (dataLoaded.current) {
       return;
@@ -35,7 +37,6 @@ export default function UserProfile() {
       .then((data) => {
         setSearchParams({});
         setData(data);
-        console.log(data);
         localStorage.setItem("token", data.accessToken);
         const athleteAvatar = data?.data[0].avatar || "";
         localStorage.setItem("avatar", athleteAvatar);
@@ -44,13 +45,16 @@ export default function UserProfile() {
       .catch((e) => {
         console.log(e.message);
       });
+  }, []);
+
+  // load activities data from database
+  useEffect(() => {
     if (localStorage.getItem("activity") === "received") {
-      GetActivityDB().then((data) => {
-        setActivities(data.data)
-        console.log(data);
+      GetAllActivities().then((data) => {
+        setActivities(data.data);
       });
     }
-  }, []);
+  }, [updateActivities]);
 
   const athlete = data?.data || [];
   const athleteName = athlete[0]?.name || "";
@@ -59,6 +63,8 @@ export default function UserProfile() {
     <>
       <AthleteDashboard name={athleteName} />
       <Activities />
+      <Box sx={{ marginTop: 10, fontSize: 24 }}> My activities for Routes</Box>
+      <CardsGrid activities={activities} />
     </>
   );
 }
@@ -100,7 +106,7 @@ export default function UserProfile() {
 //       </Box>
 //       {/* <EffortCard data={stats[0] || []}/> */}
 
-//       <CardsGrid bind={activityInput} activities={currentPageData} />
+//
 //       <PaginationRounded length={Math.ceil(activities.length / itemsShow)} />
 //     </Box>
 //   </>

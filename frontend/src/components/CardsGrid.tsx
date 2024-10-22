@@ -2,11 +2,19 @@ import React from "react";
 import { Box } from "@mui/material";
 import Card from "./Card";
 
-interface CardsGrid {
-  activities: [];
+interface Activity {
+  name: string;
+  activityID: string;
+  activityName: string;
+  athleteID: string;
+  city: string;
+  polyline: [];
+}
+interface CardsGridProps {
+  activities: Activity[];
 }
 
-export default function CardsGrid({ activities }: CardsGrid) {
+export default function CardsGrid({ activities }: CardsGridProps) {
   return (
     <Box
       sx={{
@@ -17,7 +25,16 @@ export default function CardsGrid({ activities }: CardsGrid) {
       }}
     >
       {activities.map((activity, index) => {
-        return <div> test</div>;
+        return (
+          <Card
+            key={index}
+            activityID={activity.activityID}
+            activityName={activity.name}
+            athleteID={activity.athleteID}
+            city={activity.city}
+            polyline={activity.polyline}
+          />
+        );
       })}
     </Box>
   );
