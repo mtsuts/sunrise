@@ -55,20 +55,15 @@ const fetchAthlete = async (req, res, next) => {
 const fetchActivities = async (req, res, next) => {
   const before = req.query.before
   const after = req.query.after
-
-  console.log(before, after)
+  
   try {
     const { code } = req.query
     const accessToken = req.session.accessToken
     if (!accessToken) {
       throw new Error('Access token missing!')
     }
-    // if (code) {
       const activitiesResponse = await activities(accessToken, before, after)
-      console.log(activitiesResponse)
       const userID = activitiesResponse?.data[0]?.athlete.id
-
-      console.log(activitiesResponse.data)
 
       const userActivities = await Promise.all(activitiesResponse.data.map(async (d) => {
         return {
@@ -105,8 +100,6 @@ const fetchActivities = async (req, res, next) => {
           await saveActivities(filtereduserActivities);
         }
       }
-
-    // }
     next()
   } catch (e) {
     res.status(500).send(e.message)

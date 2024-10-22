@@ -30,3 +30,16 @@ export const GetActivity = async (before, after) => {
     console.log(e.message)
   }
 }
+
+export const GetActivityDB = async() => {
+  const url = `http://localhost:3000/get-activities-DB`
+  try {
+    const response = await axios.get(url, {
+      withCredentials: true
+    })
+    return response.data
+  } catch(e){
+    console.log(e.message)
+  }
+
+}

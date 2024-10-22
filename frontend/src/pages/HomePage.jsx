@@ -4,6 +4,7 @@ import pathImage from "../images/path.JPG";
 import { Link } from "react-router-dom";
 
 export default function HomePage() {
+  const token = localStorage.getItem('token')
   return (
     <>
       <Slide
@@ -23,7 +24,7 @@ export default function HomePage() {
             fontSize: 20,
           }}
         >
-          <Box sx={{ width: {sm: '50%', xs: '100%'}, textAlign: "left" }}>
+          <Box sx={{ width: { sm: "50%", xs: "100%" }, textAlign: "left" }}>
             <img
               src={pathImage}
               alt="path"
@@ -31,7 +32,7 @@ export default function HomePage() {
             />
           </Box>
 
-          <Box sx={{ width: {sm: '50%', xs: '100%'}, textAlign: "left" }}>
+          <Box sx={{ width: { sm: "50%", xs: "100%" }, textAlign: "left" }}>
             <Box sx={{ fontSize: 28, fontWeight: "medium" }}>
               You went on a unique ride and would love to share the route with
               other cyclists?
@@ -43,25 +44,25 @@ export default function HomePage() {
                 button below and select the activity you'd like to share as a
                 route worldwide.
               </Box>
-              <Link to="/login">
-                {" "}
-                <Button
-                  variant="outlined"
-                  sx={{
-                    marginTop: 2,
-                    px: 3,
-                    fontSize: "1rem",
-                    fontWeight: "400",
-                    bgcolor: "transparent",
-                  }}
-                >
-                  Share your route
-                </Button>
-              </Link>
+
+              {!token && (
+                <Link to="/login">
+                  <Button
+                    variant="outlined"
+                    sx={{
+                      marginTop: 2,
+                      px: 3,
+                      fontSize: "1rem",
+                      fontWeight: "400",
+                      bgcolor: "transparent",
+                    }}
+                  >
+                    Share your route
+                  </Button>
+                </Link>
+              )}
             </Box>
           </Box>
-
-
         </Box>
       </Slide>
 

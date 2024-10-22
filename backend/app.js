@@ -6,6 +6,7 @@ const authRouter = require('./router/auth')
 const getAthleteRouter = require('./router/getAthlete')
 const logoutRouter = require('./router/logout')
 const activitiesRouter = require('./router/getActivities')
+const activitiesDBRouter = require('./router/getActivitiesFromDB')
 require('dotenv').config()
 require('./db/mongoose')
 
@@ -48,6 +49,9 @@ app.use(logoutRouter)
 
 // get athlete activities
 app.use(activitiesRouter)
+
+// get activities DB
+app.use(activitiesDBRouter)
 
 
 
