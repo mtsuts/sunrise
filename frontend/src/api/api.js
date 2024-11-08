@@ -31,14 +31,14 @@ export const GetAndSaveActivity = async (before, after, activityName) => {
   }
 }
 
-export const GetAllActivities = async() => {
+export const GetAllActivities = async () => {
   const url = `http://localhost:3000/get-all-activities`
   try {
     const response = await axios.get(url, {
       withCredentials: true
     })
     return response.data
-  } catch(e){
+  } catch (e) {
     console.log(e.message)
   }
 
