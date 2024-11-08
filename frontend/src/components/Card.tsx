@@ -12,7 +12,7 @@ interface CardProps {
   athleteID: String,
 }
 
-export default function Card({ activityID, polyline, activityName, city, athleteID }: CardProps) {
+export default function Card({ activityID, activityName, city, athleteID, polyline }: CardProps) {
   const activityUrl = `https://www.strava.com/activities/${activityID}`;
 
   function handleAddButtonClick() {
@@ -31,15 +31,7 @@ export default function Card({ activityID, polyline, activityName, city, athlete
           textAlign: "left",
           margin: "0 auto",
         }}
-        // onClick={onClick}
       >
-        <Button
-          onClick={handleAddButtonClick}
-          sx={{ marginBottom: 2 }}
-          variant="contained"
-        >
-          Add
-        </Button>
         <a target="_blank" href={activityUrl}>
           <Box>
             <MapWithPolylines polyline={polyline} />

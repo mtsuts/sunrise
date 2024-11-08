@@ -14,4 +14,25 @@ const dateFormatter = (date) => {
   return `${year}-${month}-${day}`;
 }
 
-export { fromMetersSecondToKmsHour, fromMetersToKms, dateFormatter }
+
+const convertToUTC = (date) => {
+  return new Date(
+    Date.UTC(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds()
+    )
+  );
+}
+
+const unixTimestamp = (value) => {
+  const date = new Date(value)
+  return Math.floor(date.getTime() / 1000)
+}
+
+
+
+export { fromMetersSecondToKmsHour, fromMetersToKms, dateFormatter, unixTimestamp }

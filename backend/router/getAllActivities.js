@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const stravaAuth = require('../middleware/stravaAuth')
-const { fetchActivities } = require('../middleware/fetchDataStrava')
 const { createClient } = require('@supabase/supabase-js')
 
 
@@ -9,8 +8,7 @@ const supabaseKey = process.env.SUPABASE_KEY
 const supabaseUrl = process.env.SUPABASE_URL
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-
-router.get('/get-activities', stravaAuth, fetchActivities, async (req, res) => {
+router.get('/get-all-activities', stravaAuth, async (req, res) => {
   const accessToken = req.session.accessToken
   const userID = req.session.athleteID
   try {

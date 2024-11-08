@@ -11,8 +11,6 @@ import ResponsiveAppBar from "./components/ResponsiveAppBar";
 function App() {
   const { avatar, setAvatar } = useContext(AppContext);
   const athelteAvatar = localStorage.getItem("avatar");
-  const location = useLocation();
-
 
   useEffect(() => {
     if (!avatar) {

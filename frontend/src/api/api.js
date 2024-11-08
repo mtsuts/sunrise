@@ -19,8 +19,8 @@ export const GetAthlete = async () => {
   }
 }
 
-export const GetActivity = async (before, after) => {
-  const url = `http://localhost:3000/get-activities?before=${before}&after=${after}`
+export const GetAndSaveActivity = async (before, after, activityName) => {
+  const url = `http://localhost:3000/get-activity?before=${before}&after=${after}&activityName=${activityName}`
   try {
     const response = await axios.get(url, {
       withCredentials: true
@@ -29,4 +29,17 @@ export const GetActivity = async (before, after) => {
   } catch (e) {
     console.log(e.message)
   }
+}
+
+export const GetAllActivities = async () => {
+  const url = `http://localhost:3000/get-all-activities`
+  try {
+    const response = await axios.get(url, {
+      withCredentials: true
+    })
+    return response.data
+  } catch (e) {
+    console.log(e.message)
+  }
+
 }
